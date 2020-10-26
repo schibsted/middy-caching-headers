@@ -52,7 +52,6 @@
     "prettier": "^2.1.2"
   },
   "dependencies": {
-    "config": "^3.3.2",
     "ramda": "^0.27.1"
   }
 }
