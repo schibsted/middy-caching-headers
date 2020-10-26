@@ -31,7 +31,7 @@ const generateCacheHeaders = (routeSettings, currentHeaders = {}) => {
         }
 
         if (!currentHeaders['surrogate-control']) {
-            generatedHeaders['surrogate-Control'] = `max-age=${cacheControl.sMaxAge}`;
+            generatedHeaders['surrogate-control'] = `max-age=${cacheControl.sMaxAge}`;
         }
     } else {
         generatedHeaders['cache-control'] = 'no-cache, no-store';
