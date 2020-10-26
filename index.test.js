@@ -1,12 +1,12 @@
 test('Middleware returns all 2 handlers', () => {
-    const accessLogMiddleware = require('./index')();
+    const middleware = require('./index')();
 
-    expect(accessLogMiddleware.after).toBeInstanceOf(Function);
-    expect(accessLogMiddleware.onError).toBeInstanceOf(Function);
+    expect(middleware.after).toBeInstanceOf(Function);
+    expect(middleware.onError).toBeInstanceOf(Function);
 });
 
 test('Adds default headers on success when gets no config', async () => {
-    const accessLogMiddleware = require('./index')();
+    const middleware = require('./index')();
 
     const payload = {
         event: {
@@ -31,13 +31,13 @@ test('Adds default headers on success when gets no config', async () => {
         },
     };
 
-    await accessLogMiddleware.after(payload);
+    await middleware.after(payload);
 
     expect(payload).toMatchSnapshot();
 });
 
 test('Adds default headers on error when gets no config', async () => {
-    const accessLogMiddleware = require('./index')();
+    const middleware = require('./index')();
 
     const payload = {
         event: {
@@ -62,13 +62,13 @@ test('Adds default headers on error when gets no config', async () => {
         },
     };
 
-    await accessLogMiddleware.after(payload);
+    await middleware.after(payload);
 
     expect(payload).toMatchSnapshot();
 });
 
 test('Adds success headers on success', async () => {
-    const accessLogMiddleware = require('./index')({
+    const middleware = require('./index')({
         success: {
             clientTime: 600,
             serverTime: 3600,
@@ -105,13 +105,13 @@ test('Adds success headers on success', async () => {
         },
     };
 
-    await accessLogMiddleware.after(payload);
+    await middleware.after(payload);
 
     expect(payload).toMatchSnapshot();
 });
 
 test('Adds error headers on error when status code matches config', async () => {
-    const accessLogMiddleware = require('./index')({
+    const middleware = require('./index')({
         success: {
             clientTime: 600,
             serverTime: 3600,
@@ -148,13 +148,13 @@ test('Adds error headers on error when status code matches config', async () => 
         },
     };
 
-    await accessLogMiddleware.onError(payload);
+    await middleware.onError(payload);
 
     expect(payload).toMatchSnapshot();
 });
 
 test("Adds error headers on error when status code doesn't match config", async () => {
-    const accessLogMiddleware = require('./index')({
+    const middleware = require('./index')({
         success: {
             clientTime: 600,
             serverTime: 3600,
@@ -191,13 +191,13 @@ test("Adds error headers on error when status code doesn't match config", async 
         },
     };
 
-    await accessLogMiddleware.onError(payload);
+    await middleware.onError(payload);
 
     expect(payload).toMatchSnapshot();
 });
 
 test('Adds no cache headers on success if requested', async () => {
-    const accessLogMiddleware = require('./index')({
+    const middleware = require('./index')({
         success: false,
         errors: {
             404: {
@@ -230,13 +230,13 @@ test('Adds no cache headers on success if requested', async () => {
         },
     };
 
-    await accessLogMiddleware.after(payload);
+    await middleware.after(payload);
 
     expect(payload).toMatchSnapshot();
 });
 
 test('Adds no cache headers on error if requested', async () => {
-    const accessLogMiddleware = require('./index')({
+    const middleware = require('./index')({
         success: {
             clientTime: 600,
             serverTime: 3600,
@@ -270,7 +270,7 @@ test('Adds no cache headers on error if requested', async () => {
         },
     };
 
-    await accessLogMiddleware.onError(payload);
+    await middleware.onError(payload);
 
     expect(payload).toMatchSnapshot();
 });
