@@ -64,13 +64,19 @@ const cachingMiddleware = ({ success = {}, errors = {} } = {}) => ({
     },
     onError: async (handler) => {
         if (!shouldAddCachingHeaders(handler)) {
-            return;
+            return handler;
         }
 
-        const errorCacheConfiguration = R.prop(handler.response.statusCode, errors);
+        const errorCacheConfiguration = R.prop(handler.error.statusCode, errors);
 
         // eslint-disable-next-line no-param-reassign
-        handler.response.headers = generateCacheHeaders(errorCacheConfiguration, handler.response.headers);
+        handler.response = R.assocPath(
+            ['headers'],
+            generateCacheHeaders(errorCacheConfiguration, R.path(['response', 'handler'], handler)),
+            handler.response
+        );
+
+        return handler;
     },
 });
 
