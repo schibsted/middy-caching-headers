@@ -62,13 +62,13 @@ test('Adds default headers on error when gets no config', async () => {
 
     handler.use(middleware());
 
-    try {
-        await handler(event, {});
-    } catch ({ response }) {
-        expect(response).toEqual({
-            headers: {},
-        });
-    }
+    await expect(handler(event, {})).rejects.toEqual(
+        expect.objectContaining({
+            response: {
+                headers: {},
+            },
+        })
+    );
 });
 
 test('Adds success headers on success', async () => {
@@ -97,16 +97,16 @@ test('Adds error headers on error when status code matches config', async () => 
 
     handler.use(middleware(config));
 
-    try {
-        await handler(event, {});
-    } catch ({ response }) {
-        expect(response).toEqual({
-            headers: {
-                'cache-control': 'max-age=600,s-maxage=600',
-                'surrogate-control': 'max-age=600',
+    await expect(handler(event, {})).rejects.toEqual(
+        expect.objectContaining({
+            response: {
+                headers: {
+                    'cache-control': 'max-age=600,s-maxage=600',
+                    'surrogate-control': 'max-age=600',
+                },
             },
-        });
-    }
+        })
+    );
 });
 
 test("Adds error headers on error when status code doesn't match config", async () => {
@@ -116,13 +116,13 @@ test("Adds error headers on error when status code doesn't match config", async 
 
     handler.use(middleware(config));
 
-    try {
-        await handler(event, {});
-    } catch ({ response }) {
-        expect(response).toEqual({
-            headers: {},
-        });
-    }
+    await expect(handler(event, {})).rejects.toEqual(
+        expect.objectContaining({
+            response: {
+                headers: {},
+            },
+        })
+    );
 });
 
 test('Adds no cache headers on success if requested', async () => {
@@ -171,13 +171,13 @@ test('Adds no cache headers on error if requested', async () => {
         })
     );
 
-    try {
-        await handler(event, {});
-    } catch ({ response }) {
-        expect(response).toEqual({
-            headers: {
-                'cache-control': 'no-cache, no-store',
+    await expect(handler(event, {})).rejects.toEqual(
+        expect.objectContaining({
+            response: {
+                headers: {
+                    'cache-control': 'no-cache, no-store',
+                },
             },
-        });
-    }
+        })
+    );
 });

@@ -70,10 +70,10 @@ const cachingMiddleware = ({ success = {}, errors = {} } = {}) => ({
         const errorCacheConfiguration = R.prop(handler.error.statusCode, errors);
 
         // eslint-disable-next-line no-param-reassign
-        return R.assocPath(
-            ['response', 'headers'],
+        handler.response = R.assocPath(
+            ['headers'],
             generateCacheHeaders(errorCacheConfiguration, R.path(['response', 'handler'], handler)),
-            handler
+            handler.response
         );
 
         return handler;
