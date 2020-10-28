@@ -1,6 +1,6 @@
 {
   "name": "@schibsted/middy-caching-headers",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Middy middleware for adding caching headers to success response and errors",
   "main": "index.js",
   "scripts": {
@@ -27,9 +27,15 @@
     "url": "git+https://github.com/schibsted/middy-caching-headers.git"
   },
   "keywords": [
-    "middy",
-    "accesslog",
-    "middleware"
+    "Lambda",
+    "Middleware",
+    "Serverless",
+    "Framework",
+    "AWS",
+    "AWS Lambda",
+    "Middy",
+    "Cache-Control",
+    "Caching"
   ],
   "author": "",
   "license": "GPL-3.0-or-later",
