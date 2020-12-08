@@ -36,6 +36,11 @@ const config = {
             serverTime: 600,
             clientTime: 600,
         },
+        403: {
+            directive: 'private',
+            serverTime: 5,
+            clientTime: 5,
+        },
     },
 };
 
@@ -108,6 +113,25 @@ test('Adds error headers on error when status code matches config', async () => 
                 headers: {
                     'cache-control': 'max-age=600,s-maxage=600',
                     'surrogate-control': 'max-age=600',
+                },
+            },
+        })
+    );
+});
+
+test('Adds cache directive if set', async () => {
+    const handler = middy(async () => {
+        throw new createError.Forbidden();
+    });
+
+    handler.use(middleware(config));
+
+    await expect(handler(event, {})).rejects.toEqual(
+        expect.objectContaining({
+            response: {
+                headers: {
+                    'cache-control': 'max-age=5,s-maxage=5,private',
+                    'surrogate-control': 'max-age=5',
                 },
             },
         })
