@@ -25,11 +25,21 @@ const config = {
         clientTime: 600,
     },
     errors: {
+        default: {
+            directive: null,
+            serverTime: 5,
+            clientTime: 5,
+        },
         502: false,
         404: {
             directive: null,
             serverTime: 600,
             clientTime: 600,
+        },
+        403: {
+            directive: 'private',
+            serverTime: 5,
+            clientTime: 5,
         },
     },
 };
@@ -109,7 +119,26 @@ test('Adds error headers on error when status code matches config', async () => 
     );
 });
 
-test("Adds error headers on error when status code doesn't match config", async () => {
+test('Adds cache directive if set', async () => {
+    const handler = middy(async () => {
+        throw new createError.Forbidden();
+    });
+
+    handler.use(middleware(config));
+
+    await expect(handler(event, {})).rejects.toEqual(
+        expect.objectContaining({
+            response: {
+                headers: {
+                    'cache-control': 'max-age=5,s-maxage=5,private',
+                    'surrogate-control': 'max-age=5',
+                },
+            },
+        })
+    );
+});
+
+test("Adds default error headers on error when status code doesn't match config", async () => {
     const handler = middy(async () => {
         throw new createError.InternalServerError();
     });
@@ -119,7 +148,10 @@ test("Adds error headers on error when status code doesn't match config", async 
     await expect(handler(event, {})).rejects.toEqual(
         expect.objectContaining({
             response: {
-                headers: {},
+                headers: {
+                    'cache-control': 'max-age=5,s-maxage=5',
+                    'surrogate-control': 'max-age=5',
+                },
             },
         })
     );
