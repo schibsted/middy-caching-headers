@@ -1,4 +1,4 @@
-# Schibsted Middy caching headers middleware
+# Middy caching headers middleware
 
 #### Caching headers middleware for the middy framework, the stylish Node.js middleware engine for AWS Lambda
 
@@ -48,6 +48,11 @@ handler
             clientTime: 600,
         },
         errors: {
+            default: {
+                directive: null,
+                serverTime: 5,
+                clientTime: 5,
+            },
             502: false,
             404: {
                 directive: null,
