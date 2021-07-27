@@ -64,7 +64,7 @@ const cachingMiddleware = ({ success = {}, errors = {} } = {}) => ({
     },
     onError: async (handler) => {
         if (!shouldAddCachingHeaders(handler)) {
-            return handler;
+            return;
         }
 
         const errorCacheConfiguration = R.propOr(R.prop('default', errors), handler.error.statusCode, errors);
@@ -75,8 +75,6 @@ const cachingMiddleware = ({ success = {}, errors = {} } = {}) => ({
             generateCacheHeaders(errorCacheConfiguration, R.path(['response', 'headers'], handler)),
             handler.response
         );
-
-        return handler;
     },
 });
 
