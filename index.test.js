@@ -72,13 +72,9 @@ test('Adds default headers on error when gets no config', async () => {
 
     handler.use(middleware());
 
-    await expect(handler(event, {})).rejects.toEqual(
-        expect.objectContaining({
-            response: {
-                headers: {},
-            },
-        })
-    );
+    await expect(handler(event, {})).resolves.toMatchObject({
+        headers: {},
+    });
 });
 
 test('Adds success headers on success', async () => {
@@ -107,16 +103,12 @@ test('Adds error headers on error when status code matches config', async () => 
 
     handler.use(middleware(config));
 
-    await expect(handler(event, {})).rejects.toEqual(
-        expect.objectContaining({
-            response: {
-                headers: {
-                    'cache-control': 'max-age=600,s-maxage=600',
-                    'surrogate-control': 'max-age=600',
-                },
-            },
-        })
-    );
+    await expect(handler(event, {})).resolves.toMatchObject({
+        headers: {
+            'cache-control': 'max-age=600,s-maxage=600',
+            'surrogate-control': 'max-age=600',
+        },
+    });
 });
 
 test('Adds cache directive if set', async () => {
@@ -126,16 +118,12 @@ test('Adds cache directive if set', async () => {
 
     handler.use(middleware(config));
 
-    await expect(handler(event, {})).rejects.toEqual(
-        expect.objectContaining({
-            response: {
-                headers: {
-                    'cache-control': 'max-age=5,s-maxage=5,private',
-                    'surrogate-control': 'max-age=5',
-                },
-            },
-        })
-    );
+    await expect(handler(event, {})).resolves.toMatchObject({
+        headers: {
+            'cache-control': 'max-age=5,s-maxage=5,private',
+            'surrogate-control': 'max-age=5',
+        },
+    });
 });
 
 test("Adds default error headers on error when status code doesn't match config", async () => {
@@ -145,16 +133,12 @@ test("Adds default error headers on error when status code doesn't match config"
 
     handler.use(middleware(config));
 
-    await expect(handler(event, {})).rejects.toEqual(
-        expect.objectContaining({
-            response: {
-                headers: {
-                    'cache-control': 'max-age=5,s-maxage=5',
-                    'surrogate-control': 'max-age=5',
-                },
-            },
-        })
-    );
+    await expect(handler(event, {})).resolves.toMatchObject({
+        headers: {
+            'cache-control': 'max-age=5,s-maxage=5',
+            'surrogate-control': 'max-age=5',
+        },
+    });
 });
 
 test('Adds no cache headers on success if requested', async () => {
@@ -203,13 +187,9 @@ test('Adds no cache headers on error if requested', async () => {
         })
     );
 
-    await expect(handler(event, {})).rejects.toEqual(
-        expect.objectContaining({
-            response: {
-                headers: {
-                    'cache-control': 'no-cache, no-store',
-                },
-            },
-        })
-    );
+    await expect(handler(event, {})).resolves.toMatchObject({
+        headers: {
+            'cache-control': 'no-cache, no-store',
+        },
+    });
 });
