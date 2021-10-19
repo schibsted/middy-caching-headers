@@ -41,7 +41,12 @@ const generateCacheHeaders = (routeSettings, currentHeaders = {}) => {
 };
 
 const shouldAddCachingHeaders = (handler) => {
-    if (ignoreMethods.includes(handler.event.httpMethod.toLowerCase())) {
+    if (
+        (handler.event.version === '1.0' &&
+            ignoreMethods.includes(R.pathOr('', ['event', 'httpMethod'], handler).toLowerCase())) ||
+        (handler.event.version === '2.0' &&
+            ignoreMethods.includes(R.pathOr('', ['event', 'requestContext', 'http', 'method'], handler).toLowerCase()))
+    ) {
         return false;
     }
 
