@@ -74,322 +74,326 @@ test('Middleware returns all 2 handlers', () => {
     expect(middleware().onError).toBeInstanceOf(Function);
 });
 
-test('(V1 payload) Adds default headers on success when gets no config', async () => {
-    const handler = middy(async () => ({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    }));
+describe('V1 payload', () => {
+    test('Adds default headers on success when gets no config', async () => {
+        const handler = middy(async () => ({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        }));
 
-    handler.use(middleware());
+        handler.use(middleware());
 
-    const response = await handler(eventV1(), {});
-    expect(response).toEqual({
-        statusCode: 200,
-        headers: {},
-        body: JSON.stringify({ foo: 'bar' }),
-    });
-});
-
-test('(V2 payload) Adds default headers on success when gets no config', async () => {
-    const handler = middy(async () => ({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    }));
-
-    handler.use(middleware());
-
-    const response = await handler(eventV2(), {});
-    expect(response).toEqual({
-        statusCode: 200,
-        headers: {},
-        body: JSON.stringify({ foo: 'bar' }),
-    });
-});
-
-test('(V1 payload) Adds default headers on error when gets no config', async () => {
-    const handler = middy(async () => {
-        throw new createError.InternalServerError('whoops');
+        const response = await handler(eventV1(), {});
+        expect(response).toEqual({
+            statusCode: 200,
+            headers: {},
+            body: JSON.stringify({ foo: 'bar' }),
+        });
     });
 
-    handler.use(middleware());
+    test('Adds default headers on error when gets no config', async () => {
+        const handler = middy(async () => {
+            throw new createError.InternalServerError('whoops');
+        });
 
-    await expect(handler(eventV1(), {})).resolves.toMatchObject({
-        headers: {},
-    });
-});
+        handler.use(middleware());
 
-test('(V2 payload) Adds default headers on error when gets no config', async () => {
-    const handler = middy(async () => {
-        throw new createError.InternalServerError('whoops');
-    });
-
-    handler.use(middleware());
-
-    await expect(handler(eventV2(), {})).resolves.toMatchObject({
-        headers: {},
-    });
-});
-
-test('(V1 payload) Adds success headers on success', async () => {
-    const handler = middy(async () => ({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    }));
-
-    handler.use(middleware(config));
-
-    const response = await handler(eventV1(), {});
-    expect(response).toEqual({
-        statusCode: 200,
-        headers: {
-            'cache-control': 'max-age=600,s-maxage=3600',
-            'surrogate-control': 'max-age=3600',
-        },
-        body: JSON.stringify({ foo: 'bar' }),
-    });
-});
-
-test('(V2 payload) Adds success headers on success', async () => {
-    const handler = middy(async () => ({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    }));
-
-    handler.use(middleware(config));
-
-    const response = await handler(eventV2(), {});
-    expect(response).toEqual({
-        statusCode: 200,
-        headers: {
-            'cache-control': 'max-age=600,s-maxage=3600',
-            'surrogate-control': 'max-age=3600',
-        },
-        body: JSON.stringify({ foo: 'bar' }),
-    });
-});
-
-test("(V1 payload) Doesn't add headers POST request", async () => {
-    const handler = middy(async () => ({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    }));
-
-    handler.use(middleware(config));
-
-    const response = await handler(eventV1('POST'), {});
-    expect(response).toEqual({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    });
-});
-
-test("(V2 payload) Doesn't add headers POST request", async () => {
-    const handler = middy(async () => ({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    }));
-
-    handler.use(middleware(config));
-
-    const response = await handler(eventV2('POST'), {});
-    expect(response).toEqual({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    });
-});
-
-test('(V1 payload) Adds error headers on error when status code matches config', async () => {
-    const handler = middy(async () => {
-        throw new createError.NotFound();
+        await expect(handler(eventV1(), {})).resolves.toMatchObject({
+            headers: {},
+        });
     });
 
-    handler.use(middleware(config));
+    test('Adds success headers on success', async () => {
+        const handler = middy(async () => ({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        }));
 
-    await expect(handler(eventV1(), {})).resolves.toMatchObject({
-        headers: {
-            'cache-control': 'max-age=600,s-maxage=600',
-            'surrogate-control': 'max-age=600',
-        },
-    });
-});
+        handler.use(middleware(config));
 
-test('(V2 payload) Adds error headers on error when status code matches config', async () => {
-    const handler = middy(async () => {
-        throw new createError.NotFound();
-    });
-
-    handler.use(middleware(config));
-
-    await expect(handler(eventV2(), {})).resolves.toMatchObject({
-        headers: {
-            'cache-control': 'max-age=600,s-maxage=600',
-            'surrogate-control': 'max-age=600',
-        },
-    });
-});
-
-test('(V1 payload) Adds cache directive if set', async () => {
-    const handler = middy(async () => {
-        throw new createError.Forbidden();
+        const response = await handler(eventV1(), {});
+        expect(response).toEqual({
+            statusCode: 200,
+            headers: {
+                'cache-control': 'max-age=600,s-maxage=3600',
+                'surrogate-control': 'max-age=3600',
+            },
+            body: JSON.stringify({ foo: 'bar' }),
+        });
     });
 
-    handler.use(middleware(config));
+    test("Doesn't add headers POST request", async () => {
+        const handler = middy(async () => ({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        }));
 
-    await expect(handler(eventV1(), {})).resolves.toMatchObject({
-        headers: {
-            'cache-control': 'max-age=5,s-maxage=5,private',
-            'surrogate-control': 'max-age=5',
-        },
-    });
-});
+        handler.use(middleware(config));
 
-test('(V2 payload) Adds cache directive if set', async () => {
-    const handler = middy(async () => {
-        throw new createError.Forbidden();
-    });
-
-    handler.use(middleware(config));
-
-    await expect(handler(eventV2(), {})).resolves.toMatchObject({
-        headers: {
-            'cache-control': 'max-age=5,s-maxage=5,private',
-            'surrogate-control': 'max-age=5',
-        },
-    });
-});
-
-test("(V1 payload) Adds default error headers on error when status code doesn't match config", async () => {
-    const handler = middy(async () => {
-        throw new createError.InternalServerError();
+        const response = await handler(eventV1('POST'), {});
+        expect(response).toEqual({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        });
     });
 
-    handler.use(middleware(config));
+    test('Adds error headers on error when status code matches config', async () => {
+        const handler = middy(async () => {
+            throw new createError.NotFound();
+        });
 
-    await expect(handler(eventV1(), {})).resolves.toMatchObject({
-        headers: {
-            'cache-control': 'max-age=5,s-maxage=5',
-            'surrogate-control': 'max-age=5',
-        },
+        handler.use(middleware(config));
+
+        await expect(handler(eventV1(), {})).resolves.toMatchObject({
+            headers: {
+                'cache-control': 'max-age=600,s-maxage=600',
+                'surrogate-control': 'max-age=600',
+            },
+        });
     });
-});
 
-test("(V2 payload) Adds default error headers on error when status code doesn't match config", async () => {
-    const handler = middy(async () => {
-        throw new createError.InternalServerError();
+    test('Adds cache directive if set', async () => {
+        const handler = middy(async () => {
+            throw new createError.Forbidden();
+        });
+
+        handler.use(middleware(config));
+
+        await expect(handler(eventV1(), {})).resolves.toMatchObject({
+            headers: {
+                'cache-control': 'max-age=5,s-maxage=5,private',
+                'surrogate-control': 'max-age=5',
+            },
+        });
     });
 
-    handler.use(middleware(config));
+    test("Adds default error headers on error when status code doesn't match config", async () => {
+        const handler = middy(async () => {
+            throw new createError.InternalServerError();
+        });
 
-    await expect(handler(eventV2(), {})).resolves.toMatchObject({
-        headers: {
-            'cache-control': 'max-age=5,s-maxage=5',
-            'surrogate-control': 'max-age=5',
-        },
+        handler.use(middleware(config));
+
+        await expect(handler(eventV1(), {})).resolves.toMatchObject({
+            headers: {
+                'cache-control': 'max-age=5,s-maxage=5',
+                'surrogate-control': 'max-age=5',
+            },
+        });
     });
-});
 
-test('(V1 payload) Adds no cache headers on success if requested', async () => {
-    const handler = middy(async () => ({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    }));
+    test('Adds no cache headers on success if requested', async () => {
+        const handler = middy(async () => ({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        }));
 
-    handler.use(
-        middleware({
-            success: false,
-            errors: {
-                404: {
-                    clientTime: 60,
-                    serverTime: 600,
+        handler.use(
+            middleware({
+                success: false,
+                errors: {
+                    404: {
+                        clientTime: 60,
+                        serverTime: 600,
+                    },
                 },
+            })
+        );
+
+        const response = await handler(eventV1(), {});
+        expect(response).toEqual({
+            statusCode: 200,
+            headers: {
+                'cache-control': 'no-cache, no-store',
             },
-        })
-    );
-
-    const response = await handler(eventV1(), {});
-    expect(response).toEqual({
-        statusCode: 200,
-        headers: {
-            'cache-control': 'no-cache, no-store',
-        },
-        body: JSON.stringify({ foo: 'bar' }),
+            body: JSON.stringify({ foo: 'bar' }),
+        });
     });
-});
 
-test('(V2 payload) Adds no cache headers on success if requested', async () => {
-    const handler = middy(async () => ({
-        statusCode: 200,
-        body: JSON.stringify({ foo: 'bar' }),
-    }));
+    test('Adds no cache headers on error if requested', async () => {
+        const handler = middy(async () => {
+            throw new createError.NotFound();
+        });
 
-    handler.use(
-        middleware({
-            success: false,
-            errors: {
-                404: {
-                    clientTime: 60,
-                    serverTime: 600,
+        handler.use(
+            middleware({
+                success: {
+                    clientTime: 600,
+                    serverTime: 3600,
+                    directive: 'must-revalidate',
                 },
-            },
-        })
-    );
+                errors: {
+                    404: false,
+                },
+            })
+        );
 
-    const response = await handler(eventV2(), {});
-    expect(response).toEqual({
-        statusCode: 200,
-        headers: {
-            'cache-control': 'no-cache, no-store',
-        },
-        body: JSON.stringify({ foo: 'bar' }),
+        await expect(handler(eventV1(), {})).resolves.toMatchObject({
+            headers: {
+                'cache-control': 'no-cache, no-store',
+            },
+        });
     });
 });
 
-test('(V1 payload) Adds no cache headers on error if requested', async () => {
-    const handler = middy(async () => {
-        throw new createError.NotFound();
+describe('V2 payload', () => {
+    test('Adds default headers on success when gets no config', async () => {
+        const handler = middy(async () => ({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        }));
+
+        handler.use(middleware());
+
+        const response = await handler(eventV2(), {});
+        expect(response).toEqual({
+            statusCode: 200,
+            headers: {},
+            body: JSON.stringify({ foo: 'bar' }),
+        });
     });
 
-    handler.use(
-        middleware({
-            success: {
-                clientTime: 600,
-                serverTime: 3600,
-                directive: 'must-revalidate',
-            },
-            errors: {
-                404: false,
-            },
-        })
-    );
+    test('Adds default headers on error when gets no config', async () => {
+        const handler = middy(async () => {
+            throw new createError.InternalServerError('whoops');
+        });
 
-    await expect(handler(eventV1(), {})).resolves.toMatchObject({
-        headers: {
-            'cache-control': 'no-cache, no-store',
-        },
-    });
-});
+        handler.use(middleware());
 
-test('(V2 payload) Adds no cache headers on error if requested', async () => {
-    const handler = middy(async () => {
-        throw new createError.NotFound();
+        await expect(handler(eventV2(), {})).resolves.toMatchObject({
+            headers: {},
+        });
     });
 
-    handler.use(
-        middleware({
-            success: {
-                clientTime: 600,
-                serverTime: 3600,
-                directive: 'must-revalidate',
-            },
-            errors: {
-                404: false,
-            },
-        })
-    );
+    test('Adds success headers on success', async () => {
+        const handler = middy(async () => ({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        }));
 
-    await expect(handler(eventV2(), {})).resolves.toMatchObject({
-        headers: {
-            'cache-control': 'no-cache, no-store',
-        },
+        handler.use(middleware(config));
+
+        const response = await handler(eventV2(), {});
+        expect(response).toEqual({
+            statusCode: 200,
+            headers: {
+                'cache-control': 'max-age=600,s-maxage=3600',
+                'surrogate-control': 'max-age=3600',
+            },
+            body: JSON.stringify({ foo: 'bar' }),
+        });
+    });
+
+    test("Doesn't add headers POST request", async () => {
+        const handler = middy(async () => ({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        }));
+
+        handler.use(middleware(config));
+
+        const response = await handler(eventV2('POST'), {});
+        expect(response).toEqual({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        });
+    });
+
+    test('Adds error headers on error when status code matches config', async () => {
+        const handler = middy(async () => {
+            throw new createError.NotFound();
+        });
+
+        handler.use(middleware(config));
+
+        await expect(handler(eventV2(), {})).resolves.toMatchObject({
+            headers: {
+                'cache-control': 'max-age=600,s-maxage=600',
+                'surrogate-control': 'max-age=600',
+            },
+        });
+    });
+
+    test('Adds cache directive if set', async () => {
+        const handler = middy(async () => {
+            throw new createError.Forbidden();
+        });
+
+        handler.use(middleware(config));
+
+        await expect(handler(eventV2(), {})).resolves.toMatchObject({
+            headers: {
+                'cache-control': 'max-age=5,s-maxage=5,private',
+                'surrogate-control': 'max-age=5',
+            },
+        });
+    });
+
+    test("Adds default error headers on error when status code doesn't match config", async () => {
+        const handler = middy(async () => {
+            throw new createError.InternalServerError();
+        });
+
+        handler.use(middleware(config));
+
+        await expect(handler(eventV2(), {})).resolves.toMatchObject({
+            headers: {
+                'cache-control': 'max-age=5,s-maxage=5',
+                'surrogate-control': 'max-age=5',
+            },
+        });
+    });
+
+    test('Adds no cache headers on success if requested', async () => {
+        const handler = middy(async () => ({
+            statusCode: 200,
+            body: JSON.stringify({ foo: 'bar' }),
+        }));
+
+        handler.use(
+            middleware({
+                success: false,
+                errors: {
+                    404: {
+                        clientTime: 60,
+                        serverTime: 600,
+                    },
+                },
+            })
+        );
+
+        const response = await handler(eventV2(), {});
+        expect(response).toEqual({
+            statusCode: 200,
+            headers: {
+                'cache-control': 'no-cache, no-store',
+            },
+            body: JSON.stringify({ foo: 'bar' }),
+        });
+    });
+
+    test('Adds no cache headers on error if requested', async () => {
+        const handler = middy(async () => {
+            throw new createError.NotFound();
+        });
+
+        handler.use(
+            middleware({
+                success: {
+                    clientTime: 600,
+                    serverTime: 3600,
+                    directive: 'must-revalidate',
+                },
+                errors: {
+                    404: false,
+                },
+            })
+        );
+
+        await expect(handler(eventV2(), {})).resolves.toMatchObject({
+            headers: {
+                'cache-control': 'no-cache, no-store',
+            },
+        });
     });
 });
