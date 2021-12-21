@@ -1,6 +1,6 @@
 # Middy caching headers middleware
 
-![github checks](https://badgen.net/github/checks/schibsted/middy-cors)
+![github checks](https://badgen.net/github/checks/schibsted/middy-caching-headers)
 ![current version @ npm](https://badgen.net/npm/v/@schibsted/middy-caching-headers)
 ![weekly downloads @ npm](https://badgen.net/npm/dw/@schibsted/middy-caching-headers)
 ![minified size](https://badgen.net//bundlephobia/min/@schibsted/middy-caching-headers)
