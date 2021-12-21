@@ -1,12 +1,15 @@
 # Middy caching headers middleware
 
-#### Caching headers middleware for the middy framework, the stylish Node.js middleware engine for AWS Lambda
+![github checks](https://badgen.net/github/checks/schibsted/middy-cors)
+![current version @ npm](https://badgen.net/npm/v/@schibsted/middy-caching-headers)
+![weekly downloads @ npm](https://badgen.net/npm/dw/@schibsted/middy-caching-headers)
+![minified size](https://badgen.net//bundlephobia/min/@schibsted/middy-caching-headers)
 
+#### Caching headers middleware for the middy framework, the stylish Node.js middleware engine for AWS Lambda
 
 This middleware sets HTTP caching headers, necessary for making the requests cache'able both in browsers and reverse proxies.
 
 Sets headers in `after` and `onError` phases.
-
 
 ## Install
 
@@ -16,13 +19,13 @@ To install this middleware you can use NPM:
 npm install --save @schibsted/middy-caching-headers
 ```
 
-
 ## Options
 
 - `success` (object) - configuration for the successful requests
 - `errors` (object) - configuration for the error requests based on the statusCode
 
 Every section of the config contains 3 properties:
+
 - `directive` (string, optional) - response directive e.g. `must-revalidate`, `public` etc.
 - `clientTime` (int) - time to set `max-age` for
 - `serverTime` (int) - time to set `s-maxage` for
@@ -74,7 +77,6 @@ handler({}, {}, (_, response) => {
   })
 })
 ```
-
 
 ## Contributing
 
