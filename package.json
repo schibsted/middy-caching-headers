@@ -67,6 +67,6 @@
     "ramda": "^0.28.0"
   },
   "peerDependencies": {
-    "@middy/core": ">=2.5.4"
+    "@middy/core": ">=2.0.0"
   }
 }
