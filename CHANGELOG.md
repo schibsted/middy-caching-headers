@@ -1,5 +1,12 @@
 
 
+### [4.0.1](https://github.com/schibsted/middy-caching-headers/compare/v4.0.0...v4.0.1) (2022-05-19)
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency @middy/core to v3 ([#110](https://github.com/schibsted/middy-caching-headers/issues/110)) ([2805bcf](https://github.com/schibsted/middy-caching-headers/commit/2805bcfc90bd9013c01f80fbd97e98c1d052a00d))
+
 ## [4.0.0](https://github.com/schibsted/middy-caching-headers/compare/v3.1.0...v4.0.0) (2022-05-19)
 
 
