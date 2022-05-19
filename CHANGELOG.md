@@ -1,5 +1,39 @@
 
 
+## [4.0.0](https://github.com/schibsted/middy-caching-headers/compare/v3.1.0...v4.0.0) (2022-05-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* adds Node 16 support, drops Node 12 (same as @middy/core 3.0.0 ).
+
+### Features
+
+* update Node versions support ([#113](https://github.com/schibsted/middy-caching-headers/issues/113)) ([9a23ed8](https://github.com/schibsted/middy-caching-headers/commit/9a23ed8f2d0acb9c39125c910206a92c9a875ff2))
+
+
+### Miscellaneous Chores
+
+* **deps:** pin dependencies ([#91](https://github.com/schibsted/middy-caching-headers/issues/91)) ([5124eef](https://github.com/schibsted/middy-caching-headers/commit/5124eefc935a52986fee96fed0a4d6ac1fa0b678))
+* **deps:** update commitlint monorepo to v16.2.4 ([#105](https://github.com/schibsted/middy-caching-headers/issues/105)) ([bc1ffd9](https://github.com/schibsted/middy-caching-headers/commit/bc1ffd9ada4595f4c3053d3ccd53bee48ed00a90))
+* **deps:** update dependency @commitlint/cli to v16.3.0 ([#111](https://github.com/schibsted/middy-caching-headers/issues/111)) ([366c830](https://github.com/schibsted/middy-caching-headers/commit/366c8302bf88f4d810c7c66b0cb87ce585076cc4))
+* **deps:** update dependency @release-it/conventional-changelog to v4.3.0 ([#100](https://github.com/schibsted/middy-caching-headers/issues/100)) ([59b044a](https://github.com/schibsted/middy-caching-headers/commit/59b044a8bfc57f291e999f5d88ef1cfd75874fef))
+* **deps:** update dependency husky to v8 ([#109](https://github.com/schibsted/middy-caching-headers/issues/109)) ([c124b31](https://github.com/schibsted/middy-caching-headers/commit/c124b31b373734243b7fbee8401a89b4612867b4))
+* **deps:** update dependency jest to v28 ([#103](https://github.com/schibsted/middy-caching-headers/issues/103)) ([83a9f54](https://github.com/schibsted/middy-caching-headers/commit/83a9f54c760f8796a976eb9dc1a383d471a7015c))
+* **deps:** update dependency lint-staged to v12.3.7 ([#92](https://github.com/schibsted/middy-caching-headers/issues/92)) ([8bf05c1](https://github.com/schibsted/middy-caching-headers/commit/8bf05c15a1a4d2f370181844c6db5e8d1367b0ca))
+* **deps:** update dependency lint-staged to v12.3.8 ([#101](https://github.com/schibsted/middy-caching-headers/issues/101)) ([596434f](https://github.com/schibsted/middy-caching-headers/commit/596434fc32660d6dd2cc25dae982b5350c9cc163))
+* **deps:** update dependency lint-staged to v12.4.0 ([#102](https://github.com/schibsted/middy-caching-headers/issues/102)) ([2df43fb](https://github.com/schibsted/middy-caching-headers/commit/2df43fbb39e8666e1b3ee95cc16ef18984913572))
+* **deps:** update dependency lint-staged to v12.4.1 ([#104](https://github.com/schibsted/middy-caching-headers/issues/104)) ([90cc6a9](https://github.com/schibsted/middy-caching-headers/commit/90cc6a939af7e90b805896b3d9608704b85ea008))
+* **deps:** update dependency minimist to 1.2.6 [security] ([#96](https://github.com/schibsted/middy-caching-headers/issues/96)) ([40c56bd](https://github.com/schibsted/middy-caching-headers/commit/40c56bd63eaeec56752b780d8aac5fff41fd0f54))
+* **deps:** update dependency release-it to v14.13.0 ([#93](https://github.com/schibsted/middy-caching-headers/issues/93)) ([ede0ff2](https://github.com/schibsted/middy-caching-headers/commit/ede0ff27ede8deb6e7ace7cd0109cd45918617fb))
+* **deps:** update dependency release-it to v14.13.1 ([#95](https://github.com/schibsted/middy-caching-headers/issues/95)) ([ea7eaba](https://github.com/schibsted/middy-caching-headers/commit/ea7eaba1571275884aa64ffe4062f07e07bbeb2b))
+* **deps:** update dependency release-it to v14.14.0 ([#97](https://github.com/schibsted/middy-caching-headers/issues/97)) ([3db4693](https://github.com/schibsted/middy-caching-headers/commit/3db4693e7f360d272fb3b43ed700632d7bf60ebe))
+* **deps:** update dependency release-it to v14.14.1 ([#98](https://github.com/schibsted/middy-caching-headers/issues/98)) ([5b20eb5](https://github.com/schibsted/middy-caching-headers/commit/5b20eb522080b6cc4b0f2981a6a863d285e65178))
+* **deps:** update dependency release-it to v14.14.2 ([#99](https://github.com/schibsted/middy-caching-headers/issues/99)) ([108af63](https://github.com/schibsted/middy-caching-headers/commit/108af63a7774a607c04efd537436cac22c312f4e))
+* **deps:** update dependency release-it to v14.14.3 ([#106](https://github.com/schibsted/middy-caching-headers/issues/106)) ([b33a29e](https://github.com/schibsted/middy-caching-headers/commit/b33a29e0af6ea043d5d6ce168e28b226b8fef2df))
+* **deps:** update linters ([#94](https://github.com/schibsted/middy-caching-headers/issues/94)) ([9c11bfb](https://github.com/schibsted/middy-caching-headers/commit/9c11bfb00893ce87643f3c5ec4b2c910165a4cc2))
+* **deps:** update release-related tools ([#115](https://github.com/schibsted/middy-caching-headers/issues/115)) ([c291ec3](https://github.com/schibsted/middy-caching-headers/commit/c291ec3076447495c85f36a3d4ad6cbcf945cfb7))
+
 ## [3.1.0](https://github.com/schibsted/middy-caching-headers/compare/v3.0.0...v3.1.0) (2022-03-18)
 
 
